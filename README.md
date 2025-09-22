@@ -130,6 +130,74 @@ argo-netCDF-pipeline-conversion/
 └── examples/                # Usage examples and tutorials
 ```
 
+# PostgreSQL + PostGIS Setup Guide
+
+This guide provides step-by-step instructions for installing and enabling PostGIS on a PostgreSQL database, and verifying the installation.
+
+## 1. Check PostgreSQL and psql Version
+```sh
+psql --version
+```
+
+## 2. Connect to PostgreSQL
+```sh
+psql -U postgres -h localhost -d postgres
+```
+- Enter your password when prompted.
+
+## 3. Enable PostGIS Extensions
+In the `postgres` database, run:
+```sql
+CREATE EXTENSION IF NOT EXISTS postgis;
+CREATE EXTENSION IF NOT EXISTS postgis_topology;
+```
+
+## 4. Verify PostGIS Installation
+```sql
+SELECT postgis_full_version();
+```
+- This should output the PostGIS version and build details.
+
+## 5. Test PostGIS Functionality
+```sql
+SELECT ST_Point(0,0)::geography;
+```
+- This should return a geography point in WKB format.
+
+## 6. Create a New Database for Your Project
+```sql
+CREATE DATABASE argo_data;
+```
+
+## 7. Connect to the New Database
+```sh
+\c argo_data
+```
+
+## 8. Enable PostGIS in the New Database
+```sql
+CREATE EXTENSION IF NOT EXISTS postgis;
+```
+
+## 9. (Optional) Run Schema SQL File
+If you have a schema file (e.g., `argo_schema.sql`), run it from your shell, not inside psql prompt:
+```sh
+psql -d argo_data -f argo_schema.sql
+```
+
+---
+
+**Note:**
+- Do not run shell commands (like `psql -d ...`) inside the `psql` prompt. Run them in your terminal.
+- Use `\q` to quit the psql prompt.
+
+---
+
+**References:**
+- [PostGIS Documentation](https://postgis.net/docs/)
+- [PostgreSQL Documentation](https://www.postgresql.org/docs/)
+
+
 ## 📊 Data Quality Features
 
 ### Quality Control Algorithms
