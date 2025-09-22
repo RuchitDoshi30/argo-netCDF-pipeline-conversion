@@ -1,0 +1,62 @@
+{
+  "database": {
+    "host": "localhost",
+    "port": 5432,
+    "database": "argo_data",
+    "user": "postgres",
+    "password": "your_password_here",
+    "connection_pool_size": 10,
+    "enable_postgis": true,
+    "connection_timeout": 30
+  },
+  "data_source": {
+    "base_url": "https://data-argo.ifremer.fr/geo/indian_ocean",
+    "timeout_seconds": 30,
+    "retry_attempts": 3,
+    "retry_delay": 2
+  },
+  "processing": {
+    "max_workers": 2,
+    "chunk_size": 1000,
+    "temp_directory": "./temp",
+    "enable_parallel_processing": true
+  },
+  "quality_control": {
+    "thresholds": {
+      "TEMP": {
+        "min": -2.5,
+        "max": 40.0,
+        "spike_threshold": 5.0,
+        "gradient_threshold": 2.0
+      },
+      "PSAL": {
+        "min": 2.0,
+        "max": 42.0,
+        "spike_threshold": 2.0,
+        "gradient_threshold": 1.0
+      },
+      "PRES": {
+        "min": 0.0,
+        "max": 11000.0,
+        "spike_threshold": 100.0,
+        "gradient_threshold": 50.0
+      },
+      "density_inversion_threshold": 0.05,
+      "min_good_data_percentage": 70.0,
+      "max_depth_gap": 500.0,
+      "min_profile_length": 5
+    }
+  },
+  "logging": {
+    "level": "INFO",
+    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    "file": "logs/argo_pipeline.log",
+    "max_file_size": "10MB",
+    "backup_count": 5
+  },
+  "output": {
+    "generate_reports": true,
+    "report_directory": "./reports",
+    "export_formats": ["json", "csv"]
+  }
+}
